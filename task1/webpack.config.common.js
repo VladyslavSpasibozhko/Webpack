@@ -3,13 +3,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
+const dev = process.env.NODE_ENV === 'development'
+
 const forCss =(loader)=> {
- const defaultSettings = [
+  const defaultSettings = [
     {
       loader:MiniCssExtractPlugin.loader,
       options: {
-        hmr: true,
-        reloadAll: true
+        hmr: dev,
+        reloadAll: dev
       }
     },
     'css-loader'
@@ -68,10 +70,4 @@ module.exports = {
       filename: 'main.[hash].css'
     })
   ],
-  devServer: {
-    port: 3001,
-    compress: true,
-    hot: true,
-    open:true
-  }
 }
