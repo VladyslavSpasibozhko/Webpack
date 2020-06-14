@@ -14,5 +14,4 @@ class Hello {
 }
 
 const hello = new Hello()
-console.log(hello)
 say()
