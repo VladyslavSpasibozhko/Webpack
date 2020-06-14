@@ -3,6 +3,25 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
+const forCss =(loader)=> {
+ const defaultSettings = [
+    {
+      loader:MiniCssExtractPlugin.loader,
+      options: {
+        hmr: true,
+        reloadAll: true
+      }
+    },
+    'css-loader'
+  ]
+
+  if(loader){
+    defaultSettings.push(loader)
+  }
+
+  return defaultSettings
+}
+
 module.exports = {
   entry:'./src/index.js',
   output:{
@@ -13,18 +32,15 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
+        use: forCss()
       },
       {
         test: /\.less$/,
-        use: [MiniCssExtractPlugin.loader,'css-loader', 'less-loader']
+        use: forCss('less-loader')
       },
       {
         test: /\.s[ac]ss$/,
-        use: [MiniCssExtractPlugin.loader,'css-loader', 'sass-loader']
+        use: forCss('sass-loader')
       },
       {
         test: /\.(png|jpg|svg|gif)$/,
@@ -51,5 +67,11 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'main.[hash].css'
     })
-  ]
+  ],
+  devServer: {
+    port: 3001,
+    compress: true,
+    hot: true,
+    open:true
+  }
 }
